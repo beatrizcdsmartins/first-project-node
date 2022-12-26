@@ -52,4 +52,4 @@ function DeleteUser(request, response){
 
 }
 
-module.exports = {AllUsers,CreateUser,UpdateUser}
+module.exports = {AllUsers,CreateUser,UpdateUser,DeleteUser}
