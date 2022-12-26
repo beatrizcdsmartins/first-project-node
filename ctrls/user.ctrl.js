@@ -16,19 +16,13 @@ function CreateUser(request, response) {
 
 }
 function UpdateUser(request, response){
-    const {id} = request.params
+    const index = request.userIndex
+    const id = request.userid
     const {name, age} = request.body
 
     const updateUser = {id, name, age}
 
-    const index = users.findIndex(user => user.id === id)
-
-    if (index < 0){
-        return response.status(404).json({ message: "User not found"})
-    }
-
     users[index]= updateUser
-
 
     return response.json(updateUser)
 
@@ -36,20 +30,14 @@ function UpdateUser(request, response){
 
 function DeleteUser(request, response){
 
-    const {id} = request.params
+    const id    = request.userid
    
-    const index = users.findIndex(user => user.id === id)
-
-    if (index < 0){
-        return response.status(404).json({ message: "User not found"})
-    }
+    const index = request.userIndex
 
     users.splice(index, 1)
-
-
 
     return response.status(204).json()
 
 }
 
-module.exports = {AllUsers,CreateUser,UpdateUser,DeleteUser}
+module.exports = {AllUsers,CreateUser,UpdateUser,DeleteUser,users}
