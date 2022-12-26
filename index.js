@@ -1,6 +1,6 @@
 const express = require('express')
 const uuid = require('uuid')
-const port = 3003
+const port = 3002
 const app = express ()
 app.use(express.json())
 
@@ -8,6 +8,30 @@ app.use(express.json())
 
 
 const users = []
+
+
+const idvalidation = (request, response, next) =>{
+
+    const {id} = request.params
+
+
+    const index = users.findIndex(user => user.id === id)
+
+    if (index < 0){
+        return response.status(404).json({ message: "User not found"})
+    }
+
+    request.userIndex = index 
+    request.userid=id
+
+   
+
+    next()
+
+
+
+}
+
 
 
 app.get('/users', (request, response) =>{  // GET -> apresentation
@@ -27,17 +51,16 @@ app.post('/users', (request, response) =>{ // POST -> add things
 
 })
 
-app.put('/users/:id', (request, response) =>{ // PUT ->  to update / change
-    const {id} = request.params
+app.put('/users/:id', idvalidation, (request, response) =>{ // PUT ->  to update / change
+
+
+    const index = request.userIndex
     const {name, age} = request.body
+    const id = request.userid
 
     const updateUser = {id, name, age}
 
-    const index = users.findIndex(user => user.id === id)
-
-    if (index < 0){
-        return response.status(404).json({ message: "User not found"})
-    }
+    
 
     users[index]= updateUser
 
@@ -47,15 +70,9 @@ app.put('/users/:id', (request, response) =>{ // PUT ->  to update / change
 })
 
 
-app.delete('/users/:id', (request, response) =>{ // DELETE
+app.delete('/users/:id', idvalidation, (request, response) =>{ // DELETE
 
-    const {id} = request.params
-   
-    const index = users.findIndex(user => user.id === id)
-
-    if (index < 0){
-        return response.status(404).json({ message: "User not found"})
-    }
+    const index = request.userIndex
 
     users.splice(index, 1)
 
