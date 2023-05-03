@@ -7,14 +7,13 @@ app.use(express.json())
 
 app.use(cors())
 
-const users = []
+const Orders = []
 
 const idvalidation = (request, response, next) =>{
 
     const {id} = request.params
 
-
-    const index = users.findIndex(user => user.id === id)
+    const index = Orders.findIndex(user => user.id === id)
 
     if (index < 0){
         return response.status(404).json({ message: "User not found"})
@@ -26,24 +25,23 @@ const idvalidation = (request, response, next) =>{
 
 }
  
-app.get('/users', (request, response) =>{  // GET -> apresentation
+app.get('/Orders', (request, response) =>{  // GET -> apresentation
 
-    return response.json(users)
+    return response.json(Orders)
 
 })
 
-app.post('/users', (request, response) =>{ // POST -> add things
+app.post('/Orders', (request, response) =>{ // POST -> add things
     const {name, order } = request.body
 
     const user = {id:uuid.v4(), order, name}
 
-    users.push(user)
+    Orders.push(user)
 
     return response.status(201).json(user)
-
 })
 
-app.put('/users/:id', idvalidation, (request, response) =>{ // PUT ->  to update / change
+app.put('/Orders/:id', idvalidation, (request, response) =>{ // PUT ->  to update / change
 
 
     const index = request.userIndex
@@ -52,17 +50,17 @@ app.put('/users/:id', idvalidation, (request, response) =>{ // PUT ->  to update
 
     const updateUser = {id, order, name}
 
-    users[index]= updateUser
+    Orders[index]= updateUser
 
     return response.json(updateUser)
 
 })
 
-app.delete('/users/:id', idvalidation, (request, response) =>{ // DELETE
+app.delete('/Orders/:id', idvalidation, (request, response) =>{ // DELETE
 
     const index = request.userIndex
 
-    users.splice(index, 1)
+    Orders.splice(index, 1)
 
 
     return response.status(204).json()
