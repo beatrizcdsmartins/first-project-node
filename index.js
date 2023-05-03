@@ -25,6 +25,12 @@ const idvalidation = (request, response, next) =>{
 
 }
  
+app.get('/', (request, response) =>{  // GET -> apresentation
+
+    return response.json("hello, World!!")
+
+})
+
 app.get('/Orders', (request, response) =>{  // GET -> apresentation
 
     return response.json(Orders)
