@@ -1,4 +1,14 @@
 const express = require('express')
+
+const UserRouter = require('./routes/user.route')
+
+const port = 3002
+const app = express ()
+app.use(express.json())
+
+app.use('/users',UserRouter)
+
+=======
 const uuid = require('uuid')
 const cors = require('cors')
 const port = process.env.PORT || 3002
